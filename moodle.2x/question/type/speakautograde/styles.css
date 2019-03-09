@@ -1,0 +1,174 @@
+/***************************************************************************
+    Because the "speakautograde" question type extends the "speak" renderer,
+    the classes of the inner display elements use the original "speak" CSS
+    class names.
+***************************************************************************/
+
+.que.speakautograde .hidesample,
+.que.speakautograde .showsample {
+    font-size: 0.85em;
+    font-weight: bold;
+}
+.que.speakautograde .hidesample::before,
+.que.speakautograde .showsample::before {
+  content: " (";
+}
+.que.speakautograde .hidesample::after,
+.que.speakautograde .showsample::after {
+  content: ")";
+}
+.que.speakautograde .hidesample {
+    color: purple;
+}
+.que.speakautograde .showsample {
+    color: red;
+}
+
+.que.speakautograde textarea.qtype_speak_response {
+    width: 100%;
+}
+
+.que.speakautograde textarea.qtype_speak_response.qtype_speakautograde_plain {
+    white-space: pre-wrap;
+    font: inherit;
+}
+
+.que.speakautograde textarea.qtype_speak_response.qtype_speakautograde_monospaced {
+    white-space: pre;
+    font-family: Andale Mono, Monaco, Courier New, DejaVu Sans Mono, monospace;
+}
+
+.que.speakautograde .qtype_speak_response {
+    min-height: 3em;
+}
+
+.que.speakautograde .qtype_speak_response.readonly {
+    background-color: white;
+    border-radius: 4px;
+    padding: 6px 12px;
+}
+
+.que.speakautograde div.qtype_speak_response textarea {
+    width: 100%;
+}
+
+.que.speakautograde div.qtype_speak_response select {
+    margin-bottom: 0px;
+}
+
+.que.speakautograde p.itemcount {
+    margin-top: 6px;
+}
+
+.que.speakautograde dl.gradebands {
+    overflow:     auto;
+}
+.que.speakautograde dl.gradebands dt {
+    float:        left;
+    clear:        left;
+    margin-right:  8px;
+}
+.que.speakautograde dl.gradebands dd {
+    float:        left;
+    margin-bottom: 0px;
+    margin-top:    2px;
+}
+
+table.speakautograde.review {
+    border-collapse: separate;
+    border-spacing:         0;
+    color:            #7f4614;
+}
+table.speakautograde.review.stats {
+    max-width:          360px;
+}
+table.speakautograde.review.feedback .c0 {
+    max-width:          200px;
+}
+
+table.speakautograde.review tr,
+table.speakautograde.review th,
+table.speakautograde.review td {
+    border: none;
+}
+
+table.speakautograde.review tr:first-child th,
+table.speakautograde.review tr:first-child td {
+    border-top: solid 1px #a65b1a;
+}
+table.speakautograde.review tr th:first-child,
+table.speakautograde.review tr td:first-child {
+    border-left: solid 1px #a65b1a;
+}
+table.speakautograde.review tr th:last-child,
+table.speakautograde.review tr td:last-child {
+    border-right: solid 1px #a65b1a;
+}
+table.speakautograde.review tr:last-child th,
+table.speakautograde.review tr:last-child td {
+    border-bottom: solid 1px #a65b1a;
+}
+
+table.speakautograde.review tr:first-child th:first-child,
+table.speakautograde.review tr:first-child td:first-child {
+    border-top-left-radius: 4px;
+}
+
+table.speakautograde.review tr:first-child th:last-child,
+table.speakautograde.review tr:first-child td:last-child {
+    border-top-right-radius: 4px;
+}
+
+table.speakautograde.review tr:last-child th:first-child,
+table.speakautograde.review tr:last-child td:first-child {
+    border-bottom-left-radius: 4px;
+}
+
+table.speakautograde.review tr:last-child th:last-child,
+table.speakautograde.review tr:last-child td:last-child {
+    border-bottom-right-radius: 4px;
+}
+
+table.speakautograde.review tbody tr:nth-of-type(odd) {
+    background-color:       #fafafa;
+}
+
+table.speakautograde.review tbody tr:nth-of-type(even) {
+    background-color:       #f0e5cc;
+}
+
+table.speakautograde.review ol,
+table.speakautograde.review ul {
+    margin:        0px 0px 0px 16px;
+    padding:                    0px;
+}
+
+table.speakautograde.review .error,
+table.speakautograde.review .missing,
+table.speakautograde.review .partial,
+table.speakautograde.review .present {
+    border-width:               2px;
+    border-style:             solid;
+    border-radius:              4px;
+    display:           inline-block;
+    padding:                2px 6px;
+    min-width:   calc(16px + 4.5em);
+    white-space:             nowrap;
+}
+
+table.speakautograde.review .error,
+table.speakautograde.review .missing {
+    background-color:  #ffdddd; /* light red */
+    border-color:      #ff7373; /* gentle red */
+    color:             #990000; /* dark red */
+}
+table.speakautograde.review .partial {
+    background-color : #ffebcc; /* light orange */
+    border-color     : #ff9900; /* gentle orange */
+    color:             #cc6600; /* dark orange */
+}
+table.speakautograde.review .present {
+    background-color:  #dff4d8; /* light green */
+    border-color:      #99ff66; /* gentle green */
+    color:             #009900; /* dark green */
+}
