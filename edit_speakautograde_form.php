@@ -86,11 +86,11 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         if ($mform->elementExists($name)) {
             $mform->removeElement($name, false);
         }
-        $label = get_string($name, 'qtype_essay');
+        $label = get_string($name, $plugin);
         $options = $qtype->response_formats();
         $element = $mform->createElement('select', $name, $label, $options);
         $mform->insertElementBefore($element, $before);
-        $mform->setDefault($name, key($options));
+        $mform->addHelpButton($name, $name, $plugin);
 
         ////////////////////////////////////////////////
         /// Add settings for Cloud Poodll media player
@@ -101,6 +101,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $label = get_string($name, $plugin);
         $options = \qtype_speakautograde\cloudpoodll\utils::get_timelimit_options();
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, 60);
 
         // language options
@@ -108,6 +109,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $label = get_string($name, $plugin);
         $options = \qtype_speakautograde\cloudpoodll\utils::get_lang_options();
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, $config->$name);
 
         // audioskin
@@ -116,6 +118,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $type = \qtype_speakautograde\cloudpoodll\constants::REC_AUDIO;
         $options = \qtype_speakautograde\cloudpoodll\utils::fetch_options_skins($type);
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault('audioskin', $config->$name);
 
         // videoskin
@@ -124,6 +127,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $type = \qtype_speakautograde\cloudpoodll\constants::REC_VIDEO;
         $options = \qtype_speakautograde\cloudpoodll\utils::fetch_options_skins($type);
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, $config->$name);
 
         // transcriber
@@ -131,6 +135,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $label = get_string($name, $plugin);
         $options = \qtype_speakautograde\cloudpoodll\utils::fetch_options_transcribers();
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, $config->$name);
 
         // transcode
@@ -138,6 +143,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $label = get_string($name, $plugin);
         $text = get_string('transcode_details', $plugin);
         $mform->insertElementBefore($mform->createElement('advcheckbox', $name, $label, $text), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, $config->$name);
 
         // expiredays
@@ -145,6 +151,7 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
         $label = get_string($name, $plugin);
         $options = \qtype_speakautograde\cloudpoodll\utils::get_expiredays_options();
         $mform->insertElementBefore($mform->createElement('select', $name, $label, $options), $before);
+        $mform->addHelpButton($name, $name, $plugin);
         $mform->setDefault($name, $config->$name);
     }
 
