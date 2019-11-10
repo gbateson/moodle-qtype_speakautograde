@@ -2,53 +2,56 @@
 Change log for qtype_speakautograde
 ========================================
 
+2019-10-12 (77)
+ - standardize layout and spelling in CHANGES.txt
+
 2019-04-24 (76)
- -  add help icons for 'Response options' in main settings form; add new icon for this plugin 
+ - add help icons for 'Response options' in main settings form; add new icon for this plugin
 
 2019-04-22 (75)
- -  move the Poodll options to the 'Response options' section of the main settings form 
+ - move the Poodll options to the 'Response options' section of the main settings form
 
 2019-04-22 (74)
- -  hide Essay response options on main settings form 
+ - hide Essay response options on main settings form
 
 2019-03-30 (73)
- -  standardize code layout in renderer 
+ - standardize code layout in renderer
 
 2019-03-30 (72)
- -  bug fixes and merge conflicts (#3) 
+ - bug fixes and merge conflicts (#3)
 
 2019-03-30 (71)
- -  added support for interactive transcript and amazon transcribe (#2) 
+ - added support for interactive transcript and amazon transcribe (#2)
 
 2019-03-25 (70)
- -  stadandize coding style and display response template/sample 
+ - stadandize coding style and display response template/sample
 
 2019-03-23 (69)
- -  stadandize coding style and display response template/sample 
+ - stadandize coding style and display response template/sample
 
 2019-03-23 (69)
- -  fix grunt error about unused 'that' 
+ - fix grunt error about unused 'that'
 
 2019-03-23 (68)
- -  merge changes from GitHub and continue standardization/optimization of code 
+ - merge changes from GitHub and continue standardization/optimization of code
 
 2019-03-23 (68)
- -  merge changes from GitHub and continue standardization/optimization of code 
+ - merge changes from GitHub and continue standardization/optimization of code
 
 2019-03-23 (68)
- -  merge changes from GitHub and continue standardization/optimization of code 
+ - merge changes from GitHub and continue standardization/optimization of code
 
 2019-03-23 (67)
- -  remove Spanish lang packs as they will be moved to AMOS 
+ - remove Spanish lang packs as they will be moved to AMOS
 
 2019-03-11 (01)
- -  qtype/speakautograde remove all code that duplicates code in parent class, essayautograde 
+ - qtype/speakautograde remove all code that duplicates code in parent class, essayautograde
 
 2019-03-10 (00)
- -  qtype_essay/speak autograde fix minimum version number in readme.txt 
+ - qtype_essay/speak autograde fix minimum version number in readme.txt
 
 2019-03-10 (00)
- -  remove shell script used to create this plugin 
+ - remove shell script used to create this plugin
 
 2019-03-10 (00)
- -  populate repository with initial files and folders 
+ - populate repository with initial files and folders
