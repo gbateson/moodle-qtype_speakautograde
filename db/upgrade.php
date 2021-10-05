@@ -47,6 +47,18 @@ function xmldb_qtype_speakautograde_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
     }
 
+    $newversion = 2021100580;
+    if ($oldversion < $newversion) {
+        // Fields for compatability with qtype_essay in Moodle >= 3.10
+        // and more granular matching of entries in the Glossary of common errors
+        $fieldnames = array(
+            'minwordlimit', 'maxwordlimit', 'maxbytes',
+            'errorfullmatch', 'errorcasesensitive', 'errorignorebreaks'
+        );
+        xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable, $fieldnames);
+        upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
+    }
+
     return true;
 }
 
@@ -76,6 +88,9 @@ function xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable, $fiel
     $fields = array(
         new xmldb_field('responsesample',                 XMLDB_TYPE_TEXT),
         new xmldb_field('responsesampleformat',           XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('minwordlimit',                   XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('maxwordlimit',                   XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('maxbytes',                       XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
         new xmldb_field('filetypeslist',                  XMLDB_TYPE_TEXT),
         new xmldb_field('enableautograde',                XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 1),
         new xmldb_field('itemtype',                       XMLDB_TYPE_INTEGER,  4, null, XMLDB_NOTNULL, null, 0),
@@ -90,6 +105,9 @@ function xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable, $fiel
         // Common errors
         new xmldb_field('errorcmid',                      XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
         new xmldb_field('errorpercent',                   XMLDB_TYPE_INTEGER,  6, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorfullmatch',                 XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorcasesensitive',             XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorignorebreaks',              XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
         // Poodll recording
         new xmldb_field('timelimit',                      XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
         new xmldb_field('language',                       XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),

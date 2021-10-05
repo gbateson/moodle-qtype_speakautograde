@@ -52,7 +52,6 @@ class qtype_speakautograde extends qtype_essayautograde {
     const SHOW_TEACHERS_ONLY         = 2;
     const SHOW_TEACHERS_AND_STUDENTS = 3;
 
-
     public function extra_question_fields() {
         $fields = parent::extra_question_fields();
 

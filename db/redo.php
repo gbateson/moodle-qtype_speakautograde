@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * type/speakautograde/db/redo.php
+ * question/type/speakautograde/db/redo.php
  *
  * @package    qtype
  * @subpackage qtype_speakautograde
@@ -60,7 +60,7 @@ if ($version = optional_param('version', 0, PARAM_INT)) {
         $text = ''; // shouldn't happen !!
     }
 
-    // reset the Speak (auto-grade) version
+    // reset the plugin version
     $params = array('plugin' => 'qtype_speakautograde', 'name' => 'version');
     $DB->set_field('config_plugins', 'value', $version - 1, $params);
     // force Moodle to refetch versions
@@ -83,6 +83,7 @@ if ($version = optional_param('version', 0, PARAM_INT)) {
 
     $versions = array();
 
+    // extract and format the current version
     $contents = file_get_contents($CFG->dirroot.'/question/type/speakautograde/version.php');
     if (preg_match('/^\$plugin->version *= *(\d{4})(\d{2})(\d{2})(\d{2});/m', $contents, $matches)) {
         $yy = $matches[1];
@@ -93,6 +94,7 @@ if ($version = optional_param('version', 0, PARAM_INT)) {
         $versions[$version] = date($dateformat, mktime(0,0,0,$mm,$dd,$yy)).($vv==0 ? '' : " ($vv)");
     }
 
+    // extract and format versions from upgrade script
     $contents = file_get_contents($CFG->dirroot.'/question/type/speakautograde/db/upgrade.php');
     preg_match_all('/(?<=\$newversion = )(\d{4})(\d{2})(\d{2})(\d{2})(?=;)/', $contents, $matches);
     $i_max = count($matches[0]);

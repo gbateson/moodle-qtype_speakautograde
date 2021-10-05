@@ -65,16 +65,38 @@ class qtype_speakautograde_edit_form extends qtype_essayautograde_edit_form {
                         'responsefieldlines'  => 5,
                         'attachments'         => 0,
                         'attachmentsrequired' => 0,
-                        'filetypeslist'       => '');
+                        'filetypeslist'       => '',
+                        // fields available on Moodle >= 3.11
+                        //'minwordlimit'        => 0,
+                        //'maxwordlimit'        => 0,
+                        //'maxbytes'            => 0,
+                        // fields available within "errorbehavior" group
+                        'errorbehavior' => array(
+                            'errorfullmatch'  => 1,
+                            'errorcasesensitive' => 1,
+                            'errorignorelinebreaks' => 1
+                        ));
+
         foreach ($values as $name => $value) {
             if ($mform->elementExists($name)) {
                 $mform->removeElement($name);
             }
-            $mform->insertElementBefore($mform->createElement('hidden', $name, $value), $before);
-            if (is_string($value)) {
-                $mform->setType($name, PARAM_TEXT);
-            } else {
-                $mform->setType($name, PARAM_INT);
+            if (is_scalar($value)) {
+                $mform->insertElementBefore($mform->createElement('hidden', $name, $value), $before);
+                if (is_string($value)) {
+                    $mform->setType($name, PARAM_TEXT);
+                } else {
+                    $mform->setType($name, PARAM_INT);
+                }
+            } else if (is_array($value)) {
+                foreach ($value as $n => $v) {
+                    $mform->insertElementBefore($mform->createElement('hidden', $n, $v), $before);
+                    if (is_string($v)) {
+                        $mform->setType($n, PARAM_TEXT);
+                    } else {
+                        $mform->setType($n, PARAM_INT);
+                    }
+                }
             }
         }
 

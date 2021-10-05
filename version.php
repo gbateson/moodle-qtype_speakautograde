@@ -29,16 +29,21 @@ $plugin->cron      = 0;
 $plugin->component = 'qtype_speakautograde';
 $plugin->dependencies = array('qtype_essayautograde' => ANY_VERSION);
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->requires  = 2015111600; // Moodle 3.0
-$plugin->version   = 2020030179;
-$plugin->release   = '2020-03-01 (79)';
+$plugin->requires  = 2015111600; // Moodle 2.9
+$plugin->version   = 2021100580;
+$plugin->release   = '2021-10-05 (80)';
 
 // https://docs.moodle.org/dev/Releases
-// Moodle 3.6 2018120300  3 Dec 2018
-// Moodle 3.5 2018051700 17 May 2018
-// Moodle 3.4 2017111300 13 Nov 2017
-// Moodle 3.3 2017051500 15 May 2017
-// Moodle 3.2 2016120500  5 Dec 2016
-// Moodle 3.1 2016052300 23 May 2016
-// Moodle 3.0 2015111600 16 Nov 2015
-// Moodle 2.9 2015051100 11 May 2015
+// Moodle 3.11 2021051700 17 May 2021
+// Moodle 3.10 2020110900  9 Nov 2020
+// Moodle 3.9  2020061500 15 Jun 2020
+// Moodle 3.8  2019111800 18 Nov 2019
+// Moodle 3.7  2019052000 20 May 2019
+// Moodle 3.6  2018120300  3 Dec 2018
+// Moodle 3.5  2018051700 17 May 2018
+// Moodle 3.4  2017111300 13 Nov 2017
+// Moodle 3.3  2017051500 15 May 2017
+// Moodle 3.2  2016120500  5 Dec 2016
+// Moodle 3.1  2016052300 23 May 2016
+// Moodle 3.0  2015111600 16 Nov 2015
+// Moodle 2.9  2015051100 11 May 2015
