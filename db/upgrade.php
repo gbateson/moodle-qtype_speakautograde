@@ -59,6 +59,14 @@ function xmldb_qtype_speakautograde_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
     }
 
+    $newversion = 2023122781;
+    if ($oldversion < $newversion) {
+        // Add "allowsimilarity" column to denote maximum allowable level of similarity,
+        // and reorder other fields to match essayautograde question type.
+        xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable);
+        upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
+    }
+
     return true;
 }
 
@@ -86,43 +94,62 @@ function xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable, $fiel
 
     $table = new xmldb_table($pluginoptionstable);
     $fields = array(
-        new xmldb_field('responsesample',                 XMLDB_TYPE_TEXT),
-        new xmldb_field('responsesampleformat',           XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('minwordlimit',                   XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('maxwordlimit',                   XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('maxbytes',                       XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('filetypeslist',                  XMLDB_TYPE_TEXT),
-        new xmldb_field('enableautograde',                XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 1),
-        new xmldb_field('itemtype',                       XMLDB_TYPE_INTEGER,  4, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('itemcount',                      XMLDB_TYPE_INTEGER,  6, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('showfeedback',                   XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('showcalculation',                XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('showtextstats',                  XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('textstatitems',                  XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),
-        new xmldb_field('showgradebands',                 XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('addpartialgrades',               XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('showtargetphrases',              XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
+
+        // Fields that are inherited from the "Essay" question type.
+        // We omit "id" and "questionid" because they are indexed fields and therefore hard to update.
+        // We include "allowsimilarity", because it relates to the template and sample.
+        new xmldb_field('responseformat', XMLDB_TYPE_CHAR, 16, null, XMLDB_NOTNULL, null, 'editor'),
+        new xmldb_field('responserequired', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 1),
+        new xmldb_field('responsefieldlines', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 15),
+        new xmldb_field('minwordlimit', XMLDB_TYPE_INTEGER, 10),
+        new xmldb_field('maxwordlimit', XMLDB_TYPE_INTEGER, 10),
+        new xmldb_field('attachments', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('attachmentsrequired', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('graderinfo', XMLDB_TYPE_TEXT),
+        new xmldb_field('graderinfoformat', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('responsetemplate', XMLDB_TYPE_TEXT),
+        new xmldb_field('responsetemplateformat', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('responsesample', XMLDB_TYPE_TEXT),
+        new xmldb_field('responsesampleformat', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('allowsimilarity', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 10),
+        new xmldb_field('maxbytes', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('filetypeslist', XMLDB_TYPE_TEXT),
+
+        // Fields that are specific to the "Essay (auto-grade)" question type.
+        new xmldb_field('enableautograde', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 1),
+        new xmldb_field('itemtype', XMLDB_TYPE_INTEGER, 4, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('itemcount', XMLDB_TYPE_INTEGER, 6, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('showfeedback', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('showcalculation', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('showtextstats', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('textstatitems', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+        new xmldb_field('showgradebands', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('addpartialgrades', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('showtargetphrases', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+
         // Common errors
-        new xmldb_field('errorcmid',                      XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('errorpercent',                   XMLDB_TYPE_INTEGER,  6, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('errorfullmatch',                 XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('errorcasesensitive',             XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('errorignorebreaks',              XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorcmid', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorpercent', XMLDB_TYPE_INTEGER, 6, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorfullmatch', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorcasesensitive', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('errorignorebreaks', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+
         // Poodll recording
-        new xmldb_field('timelimit',                      XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('language',                       XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),
-        new xmldb_field('expiredays',                     XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('transcode',                      XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('transcriber',                    XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),
-        new xmldb_field('audioskin',                      XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),
-        new xmldb_field('videoskin',                      XMLDB_TYPE_CHAR,   255, null, XMLDB_NOTNULL),
+        new xmldb_field('timelimit', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('language', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+        new xmldb_field('expiredays', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('transcode', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('transcriber', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+        new xmldb_field('audioskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+        new xmldb_field('videoskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+
         // Standard feedback
-        new xmldb_field('correctfeedback',                XMLDB_TYPE_TEXT),
-        new xmldb_field('correctfeedbackformat',          XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('incorrectfeedback',              XMLDB_TYPE_TEXT),
-        new xmldb_field('incorrectfeedbackformat',        XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('partiallycorrectfeedback',       XMLDB_TYPE_TEXT),
-        new xmldb_field('partiallycorrectfeedbackformat', XMLDB_TYPE_INTEGER,  2, null, XMLDB_NOTNULL, null, 0)
+        new xmldb_field('correctfeedback', XMLDB_TYPE_TEXT),
+        new xmldb_field('correctfeedbackformat', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('incorrectfeedback', XMLDB_TYPE_TEXT),
+        new xmldb_field('incorrectfeedbackformat', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('partiallycorrectfeedback', XMLDB_TYPE_TEXT),
+        new xmldb_field('partiallycorrectfeedbackformat', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0)
     );
 
     $previousfield = 'responsetemplateformat';

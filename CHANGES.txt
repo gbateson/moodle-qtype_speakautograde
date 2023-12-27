@@ -2,6 +2,9 @@
 Change log for qtype_speakautograde
 ========================================
 
+2023-12-27 (81)
+ - add 'allowsimilarity' field to the options table and reorder other fields to match the order of fields in the qtype_essayautograde
+
 2021-10-05 (80)
  - add fields for wordlimit and more granular error matching
 

@@ -30,8 +30,8 @@ $plugin->component = 'qtype_speakautograde';
 $plugin->dependencies = array('qtype_essayautograde' => ANY_VERSION);
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->requires  = 2015111600; // Moodle 2.9
-$plugin->version   = 2021100580;
-$plugin->release   = '2021-10-05 (80)';
+$plugin->version   = 2023122781;
+$plugin->release   = '2023-12-27 (81)';
 
 // https://docs.moodle.org/dev/Releases
 // Moodle 3.11 2021051700 17 May 2021
