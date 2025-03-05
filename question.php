@@ -29,7 +29,6 @@ defined('MOODLE_INTERNAL') || die();
 use qtype_speakautograde\cloudpoodll\constants;
 use qtype_speakautograde\cloudpoodll\utils;
 
-
 // require the parent class
 require_once($CFG->dirroot.'/question/type/essayautograde/question.php');
 
@@ -46,6 +45,27 @@ require_once($CFG->dirroot.'/question/type/essayautograde/question.php');
 // interface: question_automatically_gradable
 // class:     question_graded_automatically
 class qtype_speakautograde_question extends qtype_essayautograde_question {
+
+    /** @var int */
+    public $timelimit;
+
+    /** @var string */
+    public $language;
+
+    /** @var string */
+    public $audioskin;
+
+    /** @var string */
+    public $videoskin;
+
+    /** @var string */
+    public $transcriber;
+
+    /** @var int */
+    public $transcode;
+
+    /** @var int */
+    public $expiredays;
 
     /** @return the result of applying {@link format_text()} to the question text. */
     public function format_questiontext($qa) {
@@ -67,9 +87,9 @@ class qtype_speakautograde_question extends qtype_essayautograde_question {
             if(!empty($response['answeraudiourl']) && $response['answeraudiourl']!= null) {
                 $this->save_current_response('answeraudiourl', $response['answeraudiourl']);
 
-                //if we transcribed the audio on amazon, we pick it up now and poke it into the answer field
-                //we do not save it as "current_response", because in parent::update_current_response it looks at
-                // $response and overwrites current_response for the "answer" field
+                // If we transcribed the audio on amazon, we pick it up now and poke it into the answer field.
+                // We do not save it as "current_response", because in parent::update_current_response,
+                // it looks at $response and overwrites current_response for the "answer" field.
                 if($this->transcriber == constants::TRANSCRIBER_AMAZON_TRANSCRIBE) {
                     $answer = utils::fetch_transcript($response['answeraudiourl']);
                     if ($answer) {

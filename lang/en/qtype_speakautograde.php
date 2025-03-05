@@ -83,6 +83,7 @@ $string['refreshtoken']= 'Refresh license information';
 $string['region'] = 'AWS Region';
 $string['responseformat_help'] = 'Specify if the response will be audio only, or audio and video.';
 $string['responseformat'] = 'Response format';
+$string['responseisnotoriginal'] = 'Please make your text more original.';
 $string['saopaulo'] = 'Sao Paulo, Brazil (slow)';
 $string['skin123'] = 'One Two Three';
 $string['skinbmr'] = 'Burnt Rose';

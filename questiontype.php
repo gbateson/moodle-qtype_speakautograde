@@ -54,11 +54,13 @@ class qtype_speakautograde extends qtype_essayautograde {
 
     public function extra_question_fields() {
         $fields = parent::extra_question_fields();
+        // including "responseformat" and feedback fields.
 
         // add Poodll fields
-        array_push($fields, 'timelimit', 'language', 'expiredays',
+        array_push($fields, 'timelimit', 'language',
+                            'audioskin', 'videoskin',
                             'transcriber', 'transcode',
-                            'audioskin', 'videoskin');
+                            'expiredays');
         return $fields;
     }
 
@@ -124,15 +126,32 @@ class qtype_speakautograde extends qtype_essayautograde {
      */
     static public function get_default_values($questionid=0, $feedback=false) {    
         $values = parent::get_default_values($questionid, $feedback);
-        $values = array_merge($values, array(
-            'timelimit'   =>  0,
-            'language'    => '',
+        $values = array_merge($values, [
+            'timelimit'   =>  0, 'language'    => '',
+            'audioskin'   => '', 'videoskin'   => '',
+            'transcode'   =>  0, 'transcriber' => '',
             'expiredays'  =>  0,
-            'transcode'   =>  0,
-            'transcriber' => '',
-            'audioskin'   => '',
-            'videoskin'   => ''
-        ));
+        ]);
         return $values;
+    }
+
+    /**
+     * Return a list of fields that must be present in a Speak (auto-grade) GIFT file.
+     *
+     * @return array of field names that are required in the GIFT file.
+     */
+    public function import_included_fields() {
+        return ['timelimit', 'language',
+                'audioskin', 'videoskin',
+                'transcode', 'transcriber', 'expiredays'];
+    }
+
+    /**
+     * Return a list of fields that should not be present in a Speak (auto-grade) GIFT file.
+     *
+     * @return array of field names that are not allowed in the GIFT file.
+     */
+    public function import_excluded_fields() {
+        return [];
     }
 }
