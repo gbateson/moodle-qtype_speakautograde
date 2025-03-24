@@ -49,6 +49,15 @@ class qtype_speakautograde_renderer extends qtype_essayautograde_renderer {
     public function get_editor_type($question) {
         return $question->responseformat;
     }
+
+    /**
+     * Specify whether to show (TRUE) the item count DIV, or not (FALSE).
+     *
+     * @return bool
+     */
+    public function show_itemcount() {
+        return false;
+    }
 }
 
 /**
@@ -130,7 +139,7 @@ class qtype_speakautograde_format_base_renderer extends plugin_renderer_base{
     public function response_area_read_only($name, $qa, $step, $lines, $context) {
         $question = $qa->get_question();
 
-        // fetch submitted data
+        // Fetch submitted data. ($name = 'answer')
         $audiourl = $step->get_qt_var($name.'audiourl');
         $transcript = $step->get_qt_var($name.'transcript');
 
@@ -142,12 +151,12 @@ class qtype_speakautograde_format_base_renderer extends plugin_renderer_base{
             $transcript = utils::fetch_transcript($audiourl);
             if ($transcript) {
                 $have_subtitles = true;
-                // We need a place to do this,
-                // this would force a regrade if a transcript had arrived recently
-                // but it doesn't work here .. we get "question already started errors"
+                // We need a place to do this. Ideally, we should force a regrade
+                // if a transcript had arrived recently but that doesn't work here
+                // because we get "question already started" errors.
                 $transcriptprocessed = $qa->get_metadata('transcriptprocessed');
-                if (!$transcriptprocessed) {
-                    $qa->set_metadata('transcriptprocessed',true);
+                if (! $transcriptprocessed) {
+                    $qa->set_metadata('transcriptprocessed', true);
                     //$qa->regrade($qa,false);
                 }
             }
@@ -169,7 +178,7 @@ class qtype_speakautograde_format_base_renderer extends plugin_renderer_base{
         }
 
         // do this for testing fetch and process of transcript via ad hoc task.
-        //utils::register_fetch_transcript_task($url,$qa,$step);
+        //utils::register_fetch_transcript_task($url, $qa, $step);
     }
 
     public function response_area_input($name, $qa, $step, $lines, $context) {
@@ -205,7 +214,7 @@ class qtype_speakautograde_format_base_renderer extends plugin_renderer_base{
 
 
         // return recorder and associated hidden fields
-        return $recorder . $transcript . $audiourl . $answer . $format;
+        return $recorder.$transcript.$audiourl.$answer.$format;
     }
 
     /**

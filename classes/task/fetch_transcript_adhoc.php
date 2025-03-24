@@ -85,6 +85,8 @@ class fetch_transcript_adhoc extends \core\task\adhoc_task {
             // Process the retrieved transcript.
             $qa->process_action($stepdata, time(), $oldstep->get_user_id(), $oldstep->get_id());
             $qa->finish(time(), $oldstep->get_id());
+
+            // Now we can send it to be evaluated by the AI assistant.
         }
     }
 

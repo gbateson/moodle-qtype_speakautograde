@@ -78,34 +78,54 @@ class qtype_speakautograde_question extends qtype_essayautograde_question {
         return $qtext.$template;
     }
 
-    public function update_current_response($response, $displayoptions=null) {
-        //
-        // update Poodll response here
-        //
-        if (!empty($response)){
+    /**
+     * Updates and processes the current response for an speak autograde question.
+     *
+     * This method analyzes the response text, checks for plagiarism (if enabled),
+     * processes AI-generated feedback and grading (if requested), detects common errors,
+     * and calculates various statistics and scores used in autograding.
+     *
+     * It then stores all relevant information, including the AI-generated feedback and
+     * grading, response statistics, detected errors, and computed scores for later retrieval.
+     *
+     * @param array $response The response data containing text and attachments.
+     * @param object|null $displayoptions Optional display options affecting the response processing.
+     * @param bool $fetchai Whether to use AI for grading and feedback generation.
+     *
+     * @return void
+     */
+    public function update_current_response($response, $displayoptions=null, $fetchai=false) {
 
-            if(!empty($response['answeraudiourl']) && $response['answeraudiourl']!= null) {
-                $this->save_current_response('answeraudiourl', $response['answeraudiourl']);
+        // Check that the response is not empty.
+        if ($response && is_array($response)){
 
-                // If we transcribed the audio on amazon, we pick it up now and poke it into the answer field.
-                // We do not save it as "current_response", because in parent::update_current_response,
-                // it looks at $response and overwrites current_response for the "answer" field.
-                if($this->transcriber == constants::TRANSCRIBER_AMAZON_TRANSCRIBE) {
-                    $answer = utils::fetch_transcript($response['answeraudiourl']);
-                    if ($answer) {
-                        $response['answer']=$answer;
-                    }else{
-                        $response['answer']='';
+            $name = 'answeraudiourl';
+            if (array_key_exists($name, $response)) {
+                if ($value = $response[$name]) {
+                    $this->save_current_response($name, $value);
+                    // If we transcribed the audio on amazon, we pick it up now and poke
+                    // it into the answer field. We do not save it as "current_response",
+                    // because parent::update_current_response looks at $response and
+                    // overwrites current_response for the "answer" field.
+                    if ($this->transcriber == constants::TRANSCRIBER_AMAZON_TRANSCRIBE) {
+                        if ($answer = utils::fetch_transcript($value)) {
+                            $response['answer'] = $answer;
+                        } else {
+                            $response['answer'] = '';
+                        }
                     }
                 }
             }
 
-            if(!empty($response['answertranscript'])) {
-                $this->save_current_response('answertranscript', $response['answertranscript']);
+            $name = 'answertranscript';
+            if (array_key_exists($name, $response)) {
+                if ($value = $response[$name]) {
+                    $this->save_current_response($name, $value);
+                }
             }
         }
-        parent::update_current_response($response, $displayoptions);
 
+        parent::update_current_response($response, $displayoptions, $fetchai);
     }
 
     public function get_expected_data() {
@@ -116,11 +136,18 @@ class qtype_speakautograde_question extends qtype_essayautograde_question {
     }
 
     public function is_complete_response(array $response) {
-        // Determine if the given response has an audiourl
-        // TODO add check for transcripts here
-        $hasaudio = array_key_exists('answeraudiourl', $response) && ($response['answeraudiourl'] !== '');
-
-        // The response is complete iff all of our requirements are met.
-        return $hasaudio;
+        // Determine if the given response has an audiourl and transcript.
+        if ($result = is_array($response)) {
+            $names = ['answertranscript'];
+            // the 'answeraudiourl' is not always available.
+            foreach ($names as $name) {
+                if ($result) {
+                    if ($result = array_key_exists($name, $response)) {
+                        $result = ($response[$name] !== '');
+                    }
+                }
+            }
+        }
+        return $result;
     }
 }

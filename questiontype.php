@@ -143,7 +143,8 @@ class qtype_speakautograde extends qtype_essayautograde {
     public function import_included_fields() {
         return ['timelimit', 'language',
                 'audioskin', 'videoskin',
-                'transcode', 'transcriber', 'expiredays'];
+                'transcode', 'transcriber',
+                'expiredays'];
     }
 
     /**

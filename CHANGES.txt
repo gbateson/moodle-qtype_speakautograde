@@ -2,6 +2,9 @@
 Change log for qtype_speakautograde
 ========================================
 
+2025-03-24 (86)
+ - allow AI-generated feedback and grade
+
 2025-03-05 (85)
  - fix various preventing complete GIFT import of all settings
 
