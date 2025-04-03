@@ -2,6 +2,9 @@
 Change log for qtype_speakautograde
 ========================================
 
+2025-04-03 (87)
+ - qtype_essayautograde unify settings of fields in the DB with those in in install.xml
+
 2025-03-24 (86)
  - allow AI-generated feedback and grade
 

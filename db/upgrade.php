@@ -74,6 +74,13 @@ function xmldb_qtype_speakautograde_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
     }
 
+    $newversion = 2025040387;
+    if ($oldversion < $newversion) {
+        // Unify db fields settings in the DB with those in the XML schema (install.xml). 
+        xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable);
+        upgrade_plugin_savepoint(true, $newversion, $plugintype, $pluginname);
+    }
+
     return true;
 }
 
@@ -148,11 +155,11 @@ function xmldb_qtype_speakautograde_addfields($dbman, $pluginoptionstable, $fiel
         // Poodll recording
         new xmldb_field('timelimit', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
         new xmldb_field('language', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
-        new xmldb_field('expiredays', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 0),
+        new xmldb_field('expiredays', XMLDB_TYPE_INTEGER, 10, null, XMLDB_NOTNULL, null, 100),
         new xmldb_field('transcode', XMLDB_TYPE_INTEGER, 2, null, XMLDB_NOTNULL, null, 0),
-        new xmldb_field('transcriber', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
-        new xmldb_field('audioskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
-        new xmldb_field('videoskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL),
+        new xmldb_field('transcriber', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null, 'chrome'),
+        new xmldb_field('audioskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null, 'onetwothree'),
+        new xmldb_field('videoskin', XMLDB_TYPE_CHAR, 255, null, XMLDB_NOTNULL, null, 'onetwothree'),
 
         // Standard feedback
         new xmldb_field('correctfeedback', XMLDB_TYPE_TEXT),
