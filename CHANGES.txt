@@ -2,6 +2,9 @@
 Change log for qtype_speakautograde
 ========================================
 
+2025-08-05 (88)
+ - fix function definition of setUp and teadDown for PHPunit tests
+
 2025-04-03 (87)
  - qtype_essayautograde unify settings of fields in the DB with those in in install.xml
 
